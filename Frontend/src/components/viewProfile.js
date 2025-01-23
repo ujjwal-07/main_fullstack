@@ -14,7 +14,7 @@ const Posts = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.post('https://up-social-backend.onrender.com/posts/getyourpost',{email: localStorage.getItem("email")});
+      const response = await axios.post('http://localhost:3002/posts/getyourpost',{email: localStorage.getItem("email")});
       if(response.data){
         setPosts(response.data);
 
@@ -40,7 +40,7 @@ const Posts = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.post('https://up-social-backend.onrender.com/posts/delete', { public_id: postId });
+      await axios.post('http://localhost:3002/posts/delete', { public_id: postId });
       alert('Post deleted successfully!');
       fetchPosts();
     } catch (error) {
@@ -66,7 +66,7 @@ const Posts = () => {
     }
 
     try {
-      const response = await axios.post('https://up-social-backend.onrender.com/posts/update', {
+      const response = await axios.post('http://localhost:3002/posts/update', {
         postId: currentPost,
         title,
         description,
