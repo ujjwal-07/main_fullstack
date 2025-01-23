@@ -43,7 +43,7 @@ const Posts = () => {
     data.append('email',localStorage.getItem("email"));
 
     try {
-      const response = await axios.post('https://main-fullstack.vercel.app/posts/userpost', data, {
+      const response = await axios.post('https://ld-social.onrender.com/posts/userpost', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -62,7 +62,7 @@ const Posts = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get('https://main-fullstack.vercel.app/posts/getpost');
+      const response = await axios.get('https://ld-social.onrender.com/posts/getpost');
       setPosts(response.data);
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -82,7 +82,7 @@ const Posts = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.post('https://main-fullstack.vercel.app/posts/delete', { public_id: postId });
+      await axios.post('https://ld-social.onrender.com/posts/delete', { public_id: postId });
       alert('Post deleted successfully!');
       fetchPosts();
     } catch (error) {
@@ -110,7 +110,7 @@ const Posts = () => {
     }
 
     try {
-      const response = await axios.post('https://main-fullstack.vercel.app/posts/update', {
+      const response = await axios.post('https://ld-social.onrender.com/posts/update', {
         postId: currentPost,
         title,
         description,

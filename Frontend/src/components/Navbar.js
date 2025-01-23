@@ -45,7 +45,7 @@ const Navbar = () => {
     data.append('email',localStorage.getItem("email"));
 
     try {
-      const response = await axios.post('https://main-fullstack.vercel.app/posts/userpost', data, {
+      const response = await axios.post('https://ld-social.onrender.com/posts/userpost', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
