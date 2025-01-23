@@ -45,7 +45,7 @@ const Navbar = () => {
     data.append('email',localStorage.getItem("email"));
 
     try {
-      const response = await axios.post('http://localhost:3002/posts/userpost', data, {
+      const response = await axios.post('https://up-social-backend.onrender.com/posts/userpost', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
