@@ -8,16 +8,9 @@
     ],
     "routes": [
       {
-        "src": "/user/(.*)",
-        "dest": "./index.js"
-      },
-      {
-        "src": "/email/(.*)",
-        "dest": "./index.js"
-      },
-      {
-        "src": "/posts/(.*)",
-        "dest": "./index.js"
+        "src": "/(.*)",
+        "dest": "/"
       }
+      
     ]
   }
