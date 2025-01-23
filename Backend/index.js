@@ -5,7 +5,7 @@ const userRouter = require("./routes/userRouter");
 const emailRouter = require("./routes/emailRoutes");
 const postRouter = require("./routes/postRoutes");
 const bodyParser = require('body-parser')
-const User = require("../models/userModel");
+const User = require("./models/userModel");
 
 const app = express();
 app.use(express.json())
