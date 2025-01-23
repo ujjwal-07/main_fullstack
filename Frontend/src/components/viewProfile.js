@@ -167,7 +167,7 @@ const Posts = () => {
             <h2 className="text-2xl font-semibold text-center">Update Post</h2>
 
             {/* Modal Form */}
-            <form >
+            <form onSubmit={handleSubmitUpdate()} >
               <div className="mt-4">
                 <label htmlFor="imageName" className="block text-sm font-medium text-gray-700">
                   Image Name:
@@ -216,7 +216,7 @@ const Posts = () => {
                 >
                   Cancel
                 </button>
-                <button onClick={() => { handleSubmitUpdate() }}
+                <button 
                   type="submit"
                   className="px-4 py-2 bg-blue-500 text-white rounded-md"
                 >
