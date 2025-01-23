@@ -73,7 +73,7 @@ const Navbar = () => {
     <>
       {/* Navbar */}
       <nav className="bg-blue-600 text-white p-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold">UP_SOCIAL</h1>
+        <h1 className="text-xl font-bold">LD_SOCIAL</h1>
         <div className="flex items-center space-x-4">
           {/* Upload Button */}
           <button
