@@ -9,15 +9,15 @@
     "routes": [
       {
         "src": "/user/(.*)",
-        "dest": "/api/index.js"
+        "dest": "./index.js"
       },
       {
         "src": "/email/(.*)",
-        "dest": "/api/index.js"
+        "dest": "./index.js"
       },
       {
         "src": "/posts/(.*)",
-        "dest": "/api/index.js"
+        "dest": "./index.js"
       }
     ]
   }
