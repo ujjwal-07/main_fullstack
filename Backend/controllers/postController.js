@@ -41,7 +41,7 @@ const uploadToCloudinary = (file) => {
 // Controller to add a new post
 const addPost = async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const { title, description,email } = req.body;
     console.log(req.file)
     if(!req.file){
         return res.status(400).json({ message : "No File Uploaded"});
@@ -56,6 +56,7 @@ const addPost = async (req, res) => {
         description,
         imageName: imgPublicId,
         imageUrl: imgUrl,
+        email: email
       });
       await newPost.save();
       res.status(201).json({ message: 'Post created successfully', post: newPost });
@@ -76,6 +77,22 @@ const getPosts = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error', error });
   }
 };
+
+const getYourPost = async (req, res) => {
+  const email = req.body.email
+  try {
+    const posts = await Post.find({email:email});
+    console.log(posts, "this are the posts")
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    res.status(500).json({ message: 'Internal Server Error', error });
+  }
+};
+
+
+
+
 
 
 const deletePost = async (req,res)=>{
@@ -134,4 +151,4 @@ const updatePost = async (req, res) => {
 
 
 // Export the controller methods
-module.exports = { addPost, getPosts, upload, deletePost, updatePost };
+module.exports = { addPost, getPosts, upload, deletePost, updatePost,getYourPost };

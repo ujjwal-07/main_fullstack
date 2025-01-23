@@ -12,5 +12,8 @@ Router.get("/getpost",postController.getPosts)
 Router.post('/userpost', upload.single('image'), postController.addPost);
 Router.post("/delete",postController.deletePost);
 Router.post("/update",postController.updatePost);
+Router.post("/getyourpost",postController.getYourPost);
+
+
 
 module.exports = Router

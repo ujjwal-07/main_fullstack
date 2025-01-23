@@ -3,8 +3,52 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const app = express();
+const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
+const streamifier = require("streamifier")
 
+
+require("dotenv").config()
 app.use(express.json())
+
+
+require('dotenv').config();
+
+// Cloudinary configuration
+cloudinary.config({
+  cloud_name: process.env.cloudinary_NAME,
+  api_key: process.env.cloudinary_KEY,
+  api_secret: process.env.cloudinary_SECRET,
+});
+
+// Multer storage configuration for Cloudinary
+const storage = multer.memoryStorage();
+
+const upload = multer({ storage });
+
+
+const uploadToCloudinary = (file) => {
+    return new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { resource_type: 'auto' },
+        (error, result) => {
+          if (error) {
+            reject({ message: 'Error uploading file', error });
+          } else {
+            resolve(result);
+          }
+        }
+      );
+  
+      // Pipe the file stream to Cloudinary
+      streamifier.createReadStream(file.buffer).pipe(stream);
+    });
+  };
+
+
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+};
 
 exports.getNo = (req,res)=>{
     res.send("Hello Hala Madrid")
@@ -13,7 +57,7 @@ exports.getNo = (req,res)=>{
 exports.login = async(req,res)=>{
     try{
         const {email, password} = req.body;
-        const checkUser = await User.findOne({email})
+        const checkUser = await User.findOne({email:email})
         console.log(checkUser)
         if(!checkUser){
             res.status(400).send("Invalid Email")
@@ -26,7 +70,7 @@ exports.login = async(req,res)=>{
 
         }
         
-        res.status(200).send("Login Success")
+        res.status(200).json({ token: generateToken(checkUser.email), email:{email} });
         
 
     }catch(error){
@@ -53,7 +97,7 @@ exports.addUser = async (req, res) => {
         const { fname,lname, email, password} = req.body;
         const newUser = new User({ fname,lname, email,password });
         await newUser.save(); // Save the user to the database
-        res.send('Data Inserted Successfully');
+        res.status(201).json({ token: generateToken(newUser.email), email:email });
     } catch (error) {
         console.error("Error adding user:", error);
         res.status(500).send("Internal Server Error");

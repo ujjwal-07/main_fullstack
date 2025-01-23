@@ -5,6 +5,7 @@ const userPostSchema = new mongoose.Schema({
     description: { type : String, required : true},
     imageName: { type : String},
     imageUrl: { type : String},
+    email:{type: String},
 })
 
 const Post = mongoose.model("userPost",userPostSchema)

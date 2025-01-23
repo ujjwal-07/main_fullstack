@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaUpload } from 'react-icons/fa';
 import axios from 'axios';
 import Posts from './Posts';
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
 import render from "react-dom"
 
 const Navbar = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [submit, setSubmit] = useState(false);
+
   const navigate = useNavigate(); // For navigation
   const [formData, setFormData] = useState({
     title: '',
@@ -40,6 +42,7 @@ const Navbar = () => {
     data.append('title', formData.title);
     data.append('description', formData.description);
     data.append('image', formData.file);
+    data.append('email',localStorage.getItem("email"));
 
     try {
       const response = await axios.post('http://localhost:3002/posts/userpost', data, {
@@ -49,12 +52,22 @@ const Navbar = () => {
       });
       console.log('Post created successfully:', response.data);
       togglePopup(); // Close the popup after successful submission
-      render(<Posts/>, domNode)
 
     } catch (error) {
       console.error('Error creating post:', error);
     }
   };
+  const handleLogout = () => {
+    // Remove token and user data from localStorage
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('email');
+  
+    // Optionally, navigate the user to the login page
+    navigate('/login'); // You can change this to your desired redirect route
+  };
+  useEffect(()=>{
+    navigate("/")
+  },[submit])
 
   return (
     <>
@@ -72,8 +85,11 @@ const Navbar = () => {
           </button>
 
           {/* Login Button */}
-          <button className="bg-white text-blue-600 px-4 py-2 rounded-md hover:bg-gray-200">
-            Login
+          <button className="bg-white text-blue-600 px-4 py-2 rounded-md hover:bg-gray-200" 
+                        onClick={() => handleLogout()}
+
+          >
+            Logout
           </button>
         </div>
       </nav>

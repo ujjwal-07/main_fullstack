@@ -18,32 +18,35 @@ const AuthPage = () => {
     setIsLogin(!isLogin);
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let payload = {}; // Initialize payload
-    let apiUrl = ''; // Initialize API URL
+    let payload = {};
+    let apiUrl = '';
 
     if (isLogin) {
-      // Login case
-      payload = { email, password }; // Only email and password
-      apiUrl = 'http://localhost:3002/user/login'; // Login API
+        payload = { email, password };
+        apiUrl = 'http://localhost:3002/user/login';
     } else {
-      // Signup case
-      payload = { fname, lname, email, password }; // Include all fields
-      apiUrl = 'http://localhost:3002/user/adduser'; // Signup API
+        payload = { fname, lname, email, password };
+        apiUrl = 'http://localhost:3002/user/adduser';
     }
 
     try {
-      // Send POST request to the API
-      const response = await axios.post(apiUrl, payload);
-      console.log('Success:', response.data);
-      navigate("/") // Handle success (e.g., save token, redirect)
+        const response = await axios.post(apiUrl, payload);
+
+        // Save the token in localStorage
+        const token = response.data.token;
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('email', response.data.email.email)
+        console.log('Success:', response.data);
+        navigate('/'); // Navigate to the home page
     } catch (error) {
-      console.error('Error:', error.response ? error.response.data : error.message); // Handle error
+        console.error('Error:', error.response ? error.response.data : error.message);
     }
-  };
+};
+
+
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
