@@ -8,7 +8,11 @@ const bodyParser = require('body-parser')
 
 const app = express();
 app.use(express.json())
-app.use(cors());
+app.use(cors({
+    origin:["https://main-fullstack-frontend.vercel.app"],
+    methods: ["POST","GET"],
+    credentials: true
+}));
 app.use(bodyParser.json())
 
 app.use("/user",userRouter)
