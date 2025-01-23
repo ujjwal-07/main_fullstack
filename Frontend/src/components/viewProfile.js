@@ -168,7 +168,7 @@ const Posts = () => {
 
             {/* Modal Form */}
             <form >
-              {/* <div className="mt-4">
+              <div className="mt-4">
                 <label htmlFor="imageName" className="block text-sm font-medium text-gray-700">
                   Image Name:
                 </label>
@@ -179,7 +179,7 @@ const Posts = () => {
                   disabled
                   className="mt-1 p-2 w-full bg-gray-100 border border-gray-300 rounded-md"
                 />
-              </div> */}
+              </div>
 
               <div className="mt-4">
                 <label htmlFor="title" className="block text-sm font-medium text-gray-700">
