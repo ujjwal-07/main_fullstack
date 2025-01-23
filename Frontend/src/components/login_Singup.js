@@ -26,7 +26,7 @@ const AuthPage = () => {
 
     if (isLogin) {
         payload = { email, password };
-        apiUrl = 'http://localhost:3002/user/login';
+        apiUrl = 'https://main-fullstack.vercel.app//user/login';
         try {
           const response = await axios.post(apiUrl, payload);
   
@@ -42,7 +42,7 @@ const AuthPage = () => {
       }
     } else {
         payload = { fname, lname, email, password };
-        apiUrl = 'http://localhost:3002/user/adduser';
+        apiUrl = 'https://main-fullstack.vercel.app//user/adduser';
         try {
           const response = await axios.post(apiUrl, payload);
   

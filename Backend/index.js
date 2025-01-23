@@ -30,9 +30,6 @@ app.get("/",(req,res)=>{
     res.send("<h1>Hello</h1>")
 })
 
-
-
-
 app.listen(3002,()=>{
     console.log("App is running on port 3002")
 })
