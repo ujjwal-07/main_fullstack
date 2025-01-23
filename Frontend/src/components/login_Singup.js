@@ -42,7 +42,7 @@ const AuthPage = () => {
       }
     } else {
         payload = { fname, lname, email, password };
-        apiUrl = 'https://ld-social.onrender.com//user/adduser';
+        apiUrl = 'https://ld-social.onrender.com/user/adduser';
         try {
           const response = await axios.post(apiUrl, payload);
   
