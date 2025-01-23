@@ -14,7 +14,9 @@ app.use(bodyParser.json())
 app.use("/user",userRouter)
 app.use("/email",emailRouter)
 app.use("/posts",postRouter)
-
+app.get("/",(req,res)=>{
+    res.send("<h1>Hello</h1>")
+})
 mongoose.connect("mongodb+srv://employedatsstore:Ujjwal21@cluster0.i81xi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 .then(()=>{console.log("Connected to Mongo Atlas")})
 .catch((err)=>{console.log("Error occured : ",err)})
