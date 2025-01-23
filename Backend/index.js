@@ -1,14 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
-const bodyParser = require('body-parser');
+const cors = require("cors")
 const userRouter = require("./routes/userRouter");
 const emailRouter = require("./routes/emailRoutes");
 const postRouter = require("./routes/postRoutes");
+const bodyParser = require('body-parser')
+const User = require("./models/userModel");
 
 const app = express();
-
-app.use(express.json());
+app.use(express.json())
 const corsOptions = {
   origin: 'https://main-fullstack-frontend.vercel.app', // Allow requests from this origin
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific methods
@@ -16,21 +16,24 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(bodyParser.json());
+app.use(bodyParser.json())
 
-// MongoDB connection
+
 mongoose.connect(process.env.DB)
-  .then(() => console.log("Connected to Mongo Atlas"))
-  .catch((err) => console.log("Error occurred: ", err));
+.then(()=>{console.log("Connected to Mongo Atlas")})
+.catch((err)=>{console.log("Error occured : ",err)})
 
-// Routes
-app.use("/user", userRouter);
-app.use("/email", emailRouter);
-app.use("/posts", postRouter);
+app.use("/user",userRouter)
+app.use("/email",emailRouter)
+app.use("/posts",postRouter)
+app.get("/",(req,res)=>{
+    res.send("<h1>Hello</h1>")
+})
 
-app.get("/", (req, res) => {
-  res.send("<h1>Hello</h1>");
-});
+app.listen(3002,()=>{
+    console.log("App is running on port 3002")
+})
 
-// Export the app as a serverless function for Vercel
-module.exports = app;
+
+// using smtp server
+
