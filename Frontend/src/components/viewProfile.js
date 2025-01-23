@@ -52,8 +52,7 @@ const Posts = () => {
   // Handle Update (open modal)
   const handleUpdate = (post) => {
     setCurrentPost(post); // Set the post being updated
-    setTitle(post.title); // Reset title field
-    setDescription(post.description); // Reset description field
+
     setShowModal(true); // Show the modal
   };
 
