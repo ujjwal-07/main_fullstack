@@ -5,6 +5,7 @@ const userRouter = require("./routes/userRouter");
 const emailRouter = require("./routes/emailRoutes");
 const postRouter = require("./routes/postRoutes");
 const bodyParser = require('body-parser')
+const User = require("../models/userModel");
 
 const app = express();
 app.use(express.json())
@@ -21,7 +22,35 @@ app.use("/posts",postRouter)
 app.get("/",(req,res)=>{
     res.send("<h1>Hello</h1>")
 })
-mongoose.connect(process.env.DB)
+
+app.post("/user/login",async (req,res)=>{
+    try{
+        const {email, password} = req.body;
+        const checkUser = await User.findOne({email:email})
+        console.log(checkUser)
+        if(!checkUser){
+            res.status(400).send("Invalid Email")
+            return
+        }
+
+        const passwordCheck = await bcrypt.compare(password, checkUser.password)
+        if(!passwordCheck){
+            console.log("Incorrect Password")
+            return res.status(400).send("Invalid credentials")
+            
+
+        }
+        
+        return  res.status(200).json({ token: generateToken(checkUser.email), email:{email} });
+        
+
+    }catch(error){
+        console.error("Error fetching users:", error);
+        return  res.status(500)
+        
+    }
+})
+ mongoose.connect(process.env.DB)
 .then(()=>{console.log("Connected to Mongo Atlas")})
 .catch((err)=>{console.log("Error occured : ",err)})
 
