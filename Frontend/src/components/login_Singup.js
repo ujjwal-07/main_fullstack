@@ -27,23 +27,56 @@ const AuthPage = () => {
     if (isLogin) {
         payload = { email, password };
         apiUrl = 'http://localhost:3002/user/login';
+        try {
+          const response = await axios.post(apiUrl, payload);
+  
+          // Save the token in localStorage
+          const token = response.data.token;
+        
+          localStorage.setItem('authToken', token);
+          localStorage.setItem('email', response.data.email.email)
+          console.log('Success:', response.data);
+          navigate('/'); // Navigate to the home page
+      } catch (error) {
+          console.error('Error:', error.response ? error.response.data : error.message);
+      }
     } else {
         payload = { fname, lname, email, password };
         apiUrl = 'http://localhost:3002/user/adduser';
+        try {
+          const response = await axios.post(apiUrl, payload);
+  
+          // Save the token in localStorage
+          const token = response.data.token;
+        
+          localStorage.setItem('authToken', token);
+          localStorage.setItem('email', response.data.email)
+          console.log('Success:', response.data);
+          navigate('/'); // Navigate to the home page
+      } catch (error) {
+        alert(error.response.data)
+          console.error('Error:', error.response ? error.response.data : error.message);
+          setEmail('')
+          setFname('')
+          setLname('')
+          setPassword('')
+          navigate("/login")
+      }
     }
 
-    try {
-        const response = await axios.post(apiUrl, payload);
+    // try {
+    //     const response = await axios.post(apiUrl, payload);
 
-        // Save the token in localStorage
-        const token = response.data.token;
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('email', response.data.email.email)
-        console.log('Success:', response.data);
-        navigate('/'); // Navigate to the home page
-    } catch (error) {
-        console.error('Error:', error.response ? error.response.data : error.message);
-    }
+    //     // Save the token in localStorage
+    //     const token = response.data.token;
+      
+    //     localStorage.setItem('authToken', token);
+    //     localStorage.setItem('email', response.data.email.email)
+    //     console.log('Success:', response.data);
+    //     navigate('/'); // Navigate to the home page
+    // } catch (error) {
+    //     console.error('Error:', error.response ? error.response.data : error.message);
+    // }
 };
 
 

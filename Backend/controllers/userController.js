@@ -61,47 +61,68 @@ exports.login = async(req,res)=>{
         console.log(checkUser)
         if(!checkUser){
             res.status(400).send("Invalid Email")
+            return
         }
 
         const passwordCheck = await bcrypt.compare(password, checkUser.password)
         if(!passwordCheck){
             console.log("Incorrect Password")
-            res.status(400).send("Invalid credentials")
+            return res.status(400).send("Invalid credentials")
+            
 
         }
         
-        res.status(200).json({ token: generateToken(checkUser.email), email:{email} });
+        return  res.status(200).json({ token: generateToken(checkUser.email), email:{email} });
         
 
     }catch(error){
         console.error("Error fetching users:", error);
-        res.status(500)
+        return  res.status(500)
+        
     }
 }
 
 exports.getUser = async (req,res)=>{
     try {
         const allUsers = await User.find(); // Fetch all users
-        res.send(allUsers)
+        return res.send(allUsers)
+        
         // res.render('index', { users: allUsers });
     } catch (error) {
         console.error("Error fetching users:", error);
-        res.status(500).send("Internal Server Error");
+        return res.status(500).send("Internal Server Error");
+        
     }
 };
 
 // Add a new user to the database
+// Add a new user to the database
 exports.addUser = async (req, res) => {
-    try {
-        console.log(req.body)
-        const { fname,lname, email, password} = req.body;
-        const newUser = new User({ fname,lname, email,password });
-        await newUser.save(); // Save the user to the database
-        res.status(201).json({ token: generateToken(newUser.email), email:email });
-    } catch (error) {
-        console.error("Error adding user:", error);
-        res.status(500).send("Internal Server Error");
-    }
+  try {
+      console.log(req.body)
+      const { fname, lname, email, password } = req.body;
+
+      // Check if a user with the provided email already exists
+      const existingUser = await User.findOne({ email: email });
+      console.log(existingUser, "existingUser");
+
+      if (existingUser) {
+          // If a user exists with this email, send a conflict response
+          return res.status(409).send("User with this email already exists");
+      }
+
+      // Create a new user object if email is unique
+      const newUser = new User({ fname, lname, email, password });
+      await newUser.save(); // Save the user to the database
+
+      // Return a response with the generated token and email
+      return res.status(201).json({ token: generateToken(newUser.email), email: newUser.email });
+      
+  } catch (error) {
+      console.error("Error adding user:", error);
+      return res.status(500).send("Internal Server Error");
+  }
 };
+
 
 // DUMMY CODE FOR NOW
