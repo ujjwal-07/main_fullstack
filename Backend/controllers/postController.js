@@ -116,7 +116,7 @@ const deletePost = async (req,res)=>{
 const updatePost = async (req, res) => {
   const { postId, title, description } = req.body;
  console.log(req.body)
-  console.log(postId.imageName, "This is postid")
+  console.log(postId, "This is postid")
 
   if (!title || !description || !postId) {
     return res.status(400).json({ message: 'Title, Description, and Post ID are required' });
