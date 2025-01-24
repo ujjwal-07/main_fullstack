@@ -125,7 +125,7 @@ const updatePost = async (req, res) => {
   try {
     // Find the post by imageName (assumed postId is imageName in this case)
     const post = await Post.findOne({ imageName: postId });
-
+    console.log("postss", post)
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
