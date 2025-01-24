@@ -13,7 +13,6 @@ const Posts = () => {
   const navigate = useNavigate(); // For navigation
 
   const fetchPosts = async () => {
-    setLoading(true); // Start loading
     try {
       const response = await axios.post('https://up-social-backend.onrender.com/posts/getyourpost', {
         email: localStorage.getItem('email'),
@@ -24,7 +23,7 @@ const Posts = () => {
     } catch (error) {
       console.error('Error fetching posts:', error);
     } finally {
-      setLoading(false); // Stop loading after fetching
+      setLoading(false);
     }
   };
 
@@ -38,23 +37,19 @@ const Posts = () => {
     const confirmDelete = window.confirm('Are you sure you want to delete this post?');
     if (!confirmDelete) return;
 
-    setLoading(true); // Start loading for delete action
     try {
       await axios.post('https://up-social-backend.onrender.com/posts/delete', { public_id: postId });
       alert('Post deleted successfully!');
-      fetchPosts(); // Refresh the posts
+      fetchPosts();
     } catch (error) {
       console.error('Error deleting post:', error);
       alert('Failed to delete the post.');
-    } finally {
-      setLoading(false); // Stop loading after delete
     }
   };
 
   // Handle Update (open modal)
   const handleUpdate = (post) => {
-    console.log(post)
-    setCurrentPost(post.imageName); // Set the post being updated
+    setCurrentPost(post); // Set the post being updated
     setTitle(post.title); // Reset title field
     setDescription(post.description); // Reset description field
     setShowModal(true); // Show the modal
@@ -69,10 +64,9 @@ const Posts = () => {
       return;
     }
 
-    setLoading(true); // Start loading for update action
     try {
       const response = await axios.post('https://up-social-backend.onrender.com/posts/update', {
-        postId: currentPost,
+        postId: currentPost._id,
         title,
         description,
       });
@@ -85,17 +79,11 @@ const Posts = () => {
     } catch (error) {
       console.error('Error updating post:', error);
       alert('Failed to update the post.');
-    } finally {
-      setLoading(false); // Stop loading after update
     }
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen bg-gray-100">
-        <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
-      </div>
-    ); // Show loading spinner while posts are loading
+    return <p>Loading posts...</p>; // Show loading state
   }
 
   return (
