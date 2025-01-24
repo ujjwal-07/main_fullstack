@@ -17,9 +17,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json())
+app.options('*', cors(corsOptions));
 
-
-mongoose.connect(process.env.DB)
+mongoose.connect( "mongodb+srv://employedatsstore:Ujjwal21@cluster0.i81xi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", { useNewUrlParser: true, useUnifiedTopology: true })
 .then(()=>{console.log("Connected to Mongo Atlas")})
 .catch((err)=>{console.log("Error occured : ",err)})
 
