@@ -138,7 +138,7 @@ const updatePost = async (req, res) => {
     await post.save();
 
     // Send success response
-    return res.status(200).json({ message: 'Post updated successfully', post });
+    return res.status(200).send({ Success: 'Post updated successfully', post });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Server error. Please try again later' });
