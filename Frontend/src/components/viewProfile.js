@@ -95,7 +95,6 @@ const Posts = () => {
       >
         Back
       </button>
-
       {posts.length === 0 ? (
         <div className="flex justify-center items-center h-full">
           <p className="text-gray-600 text-xl font-semibold">No posts uploaded.</p>
