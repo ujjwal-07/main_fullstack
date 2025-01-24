@@ -35,5 +35,4 @@ app.listen(3002,()=>{
 })
 
 
-// using smtp server
 
