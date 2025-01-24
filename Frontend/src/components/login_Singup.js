@@ -38,6 +38,7 @@ const AuthPage = () => {
           console.log('Success:', response.data);
           navigate('/'); // Navigate to the home page
       } catch (error) {
+          alert(error.response.data)
           console.error('Error:', error.response ? error.response.data : error.message);
       }
     } else {
