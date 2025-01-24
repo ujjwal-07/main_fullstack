@@ -1,20 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaUpload } from 'react-icons/fa';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import Posts from './Posts';
+import { redirect, useNavigate } from 'react-router-dom';
+import render from "react-dom"
 
 const Navbar = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [submit, setSubmit] = useState(false);
+
+  const navigate = useNavigate(); // For navigation
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     file: null,
   });
-  const [loading, setLoading] = useState(false); // Loader state for posting content
-  const navigate = useNavigate();
 
+  const domNode = document.getElementById('root');
+
+
+  
   const togglePopup = () => {
+
+    
     setIsPopupOpen(!isPopupOpen);
   };
 
@@ -34,9 +42,7 @@ const Navbar = () => {
     data.append('title', formData.title);
     data.append('description', formData.description);
     data.append('image', formData.file);
-    data.append('email', localStorage.getItem("email"));
-
-    setLoading(true); // Start loader
+    data.append('email',localStorage.getItem("email"));
 
     try {
       const response = await axios.post('https://up-social-backend.onrender.com/posts/userpost', data, {
@@ -46,25 +52,22 @@ const Navbar = () => {
       });
       console.log('Post created successfully:', response.data);
       togglePopup(); // Close the popup after successful submission
+
     } catch (error) {
       console.error('Error creating post:', error);
-    } finally {
-      setLoading(false); // Stop loader
     }
   };
-
   const handleLogout = () => {
-    // Show loading while logging out
-    setLoading(true);
-
     // Remove token and user data from localStorage
     localStorage.removeItem('authToken');
     localStorage.removeItem('email');
-
-    // Navigate to login page after logout
-    navigate('/login');
-    setLoading(false); // Stop loader after navigating
+  
+    // Optionally, navigate the user to the login page
+    navigate('/login'); // You can change this to your desired redirect route
   };
+  useEffect(()=>{
+    navigate("/")
+  },[submit])
 
   return (
     <>
@@ -81,22 +84,15 @@ const Navbar = () => {
             Upload
           </button>
 
-          {/* Logout Button */}
-          <button
-            className="bg-white text-blue-600 px-4 py-2 rounded-md hover:bg-gray-200"
-            onClick={handleLogout}
+          {/* Login Button */}
+          <button className="bg-white text-blue-600 px-4 py-2 rounded-md hover:bg-gray-200" 
+                        onClick={() => handleLogout()}
+
           >
-            {loading ? 'Logging Out...' : 'Logout'}
+            Logout
           </button>
         </div>
       </nav>
-
-      {/* Loader when submitting a post or logging out */}
-      {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-          <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
-        </div>
-      )}
 
       {/* Popup */}
       {isPopupOpen && (
