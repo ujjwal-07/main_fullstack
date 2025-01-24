@@ -54,7 +54,7 @@ const Posts = () => {
   // Handle Update (open modal)
   const handleUpdate = (post) => {
     console.log(post)
-    setCurrentPost(post); // Set the post being updated
+    setCurrentPost(post.imageName); // Set the post being updated
     setTitle(post.title); // Reset title field
     setDescription(post.description); // Reset description field
     setShowModal(true); // Show the modal
@@ -72,7 +72,7 @@ const Posts = () => {
     setLoading(true); // Start loading for update action
     try {
       const response = await axios.post('https://up-social-backend.onrender.com/posts/update', {
-        postId: currentPost._id,
+        postId: currentPost,
         title,
         description,
       });
