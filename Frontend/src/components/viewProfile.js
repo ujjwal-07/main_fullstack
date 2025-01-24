@@ -72,7 +72,7 @@ const Posts = () => {
         description,
       });
       console.log(response.data)
-      if (response.data.Success) {
+      if (response.data) {
         alert('Post updated successfully!');
         setShowModal(false); // Close modal
         fetchPosts(); // Refresh the posts
