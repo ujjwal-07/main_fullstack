@@ -14,13 +14,11 @@ const Posts = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.post('https://ld-social.onrender.com/posts/getyourpost',{email: localStorage.getItem("email")});
-      if(response.data){
+      const response = await axios.post('https://ld-social.onrender.com/posts/getyourpost', {
+        email: localStorage.getItem('email'),
+      });
+      if (response.data) {
         setPosts(response.data);
-
-      }
-      else{
-        return <h1>NO Post To show</h1>
       }
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -59,6 +57,7 @@ const Posts = () => {
 
   // Handle Update Submit
   const handleSubmitUpdate = async (e) => {
+    e.preventDefault();
 
     if (!title || !description) {
       alert('Title and description are required');
@@ -67,11 +66,11 @@ const Posts = () => {
 
     try {
       const response = await axios.post('https://ld-social.onrender.com/posts/update', {
-        postId: currentPost,
+        postId: currentPost._id,
         title,
         description,
       });
-      
+
       if (response.data.success) {
         alert('Post updated successfully!');
         setShowModal(false); // Close modal
@@ -91,74 +90,80 @@ const Posts = () => {
     <div className="p-4 overflow-y-auto h-screen bg-gray-100">
       {/* Back Button */}
       <button
-        onClick={() => navigate("/")} // Go back to the previous page
+        onClick={() => navigate('/')} // Go back to the previous page
         className="bg-green-500 text-white px-4 py-2 rounded-md mb-4"
       >
         Back
       </button>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {posts.map((post) => (
-          <div
-            key={post._id}
-            className="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 relative"
-          >
-            {/* Card Image */}
-            <div className="relative pb-56">
-              <img
-                src={post.imageUrl}
-                alt={post.title}
-                className="absolute inset-0 w-full h-full object-cover rounded-t-lg"
-              />
-            </div>
+      {posts.length === 0 ? (
+        <div className="flex justify-center items-center h-full">
+          <p className="text-gray-600 text-xl font-semibold">No posts uploaded.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {posts.map((post) => (
+            <div
+              key={post._id}
+              className="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 relative"
+            >
+              {/* Card Image */}
+              <div className="relative pb-56">
+                <img
+                  src={post.imageUrl}
+                  alt={post.title}
+                  className="absolute inset-0 w-full h-full object-cover rounded-t-lg"
+                />
+              </div>
 
-            {/* Hamburger Menu */}
-            <div className="absolute top-2 right-2">
-              <button
-                className="text-gray-700 bg-white p-2 rounded-full shadow-lg hover:text-indigo-500 hover:bg-gray-100 focus:outline-none"
-                onClick={() => setMenuOpen(menuOpen === post._id ? null : post._id)}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+              {/* Hamburger Menu */}
+              <div className="absolute top-2 right-2">
+                <button
+                  className="text-gray-700 bg-white p-2 rounded-full shadow-lg hover:text-indigo-500 hover:bg-gray-100 focus:outline-none"
+                  onClick={() => setMenuOpen(menuOpen === post._id ? null : post._id)}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 12h.01M12 12h.01M18 12h.01"
-                  />
-                </svg>
-              </button>
-              {menuOpen === post._id && (
-                <div className="absolute right-0 mt-2 bg-white border border-gray-200 rounded shadow-md z-10">
-                  <button
-                    onClick={() => handleUpdate(post)}
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-8 w-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                   >
-                    Update
-                  </button>
-                  <button
-                    onClick={() => handleDelete(post)}
-                    className="block px-4 py-2 text-red-600 hover:bg-red-100 w-full text-left"
-                  >
-                    Delete
-                  </button>
-                </div>
-              )}
-            </div>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 12h.01M12 12h.01M18 12h.01"
+                    />
+                  </svg>
+                </button>
+                {menuOpen === post._id && (
+                  <div className="absolute right-0 mt-2 bg-white border border-gray-200 rounded shadow-md z-10">
+                    <button
+                      onClick={() => handleUpdate(post)}
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left"
+                    >
+                      Update
+                    </button>
+                    <button
+                      onClick={() => handleDelete(post._id)}
+                      className="block px-4 py-2 text-red-600 hover:bg-red-100 w-full text-left"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
 
-            {/* Card Content */}
-            <div className="p-4">
-              <h2 className="text-lg font-semibold text-gray-800">{post.title}</h2>
-              <p className="text-gray-600 mt-2">{post.description}</p>
+              {/* Card Content */}
+              <div className="p-4">
+                <h2 className="text-lg font-semibold text-gray-800">{post.title}</h2>
+                <p className="text-gray-600 mt-2">{post.description}</p>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {/* Modal for updating post */}
       {showModal && (
@@ -167,7 +172,7 @@ const Posts = () => {
             <h2 className="text-2xl font-semibold text-center">Update Post</h2>
 
             {/* Modal Form */}
-            <form onSubmit={handleSubmitUpdate()} >
+            <form onSubmit={handleSubmitUpdate}>
               <div className="mt-4">
                 <label htmlFor="imageName" className="block text-sm font-medium text-gray-700">
                   Image Name:
@@ -216,10 +221,7 @@ const Posts = () => {
                 >
                   Cancel
                 </button>
-                <button 
-                  type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                >
+                <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md">
                   Submit
                 </button>
               </div>
