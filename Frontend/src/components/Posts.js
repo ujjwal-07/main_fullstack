@@ -128,7 +128,11 @@ const Posts = () => {
   };
 
   if (loading) {
-    return <p>Loading posts...</p>; // Show loading state
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-100">
+        <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+      </div>
+    ); // Show loading spinner while posts are loading
   }
 
   return (

@@ -36,7 +36,7 @@ const Profile = () => {
 
       {/* Options */}
       {showOptions && (
-        <div className="absolute top-20 left-0 bg-white shadow-lg rounded-md p-2 z-10 w-60">
+        <div className="absolute top-5 left-0 bg-white shadow-lg rounded-md p-2 z-10 w-60">
           <ul>
             <li
               className="px-4 py-2 hover:bg-gray-200 cursor-pointer"

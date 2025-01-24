@@ -115,7 +115,7 @@ const deletePost = async (req,res)=>{
 
 const updatePost = async (req, res) => {
   const { postId, title, description } = req.body;
- 
+ console.log(req.body)
   console.log(postId.imageName, "This is postid")
 
   if (!title || !description || !postId) {
