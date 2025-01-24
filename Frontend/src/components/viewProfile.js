@@ -49,7 +49,8 @@ const Posts = () => {
 
   // Handle Update (open modal)
   const handleUpdate = (post) => {
-    setCurrentPost(post); // Set the post being updated
+    setCurrentPost(post); 
+    console.log(currentPost)// Set the post being updated
     setTitle(post.title); // Reset title field
     setDescription(post.description); // Reset description field
     setShowModal(true); // Show the modal
@@ -146,7 +147,7 @@ const Posts = () => {
                       Update
                     </button>
                     <button
-                      onClick={() => handleDelete(post._id)}
+                      onClick={() => handleDelete(post.imageName)}
                       className="block px-4 py-2 text-red-600 hover:bg-red-100 w-full text-left"
                     >
                       Delete
