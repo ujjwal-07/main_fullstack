@@ -67,7 +67,7 @@ const Posts = () => {
 
     try {
       const response = await axios.post('https://up-social-backend.onrender.com/posts/update', {
-        postId: currentPost._id,
+        postId: currentPost.imageName,
         title,
         description,
       });
