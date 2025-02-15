@@ -7,6 +7,7 @@ import render from "react-dom"
 
 const Navbar = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [submit, setSubmit] = useState(false);
 
   const navigate = useNavigate(); // For navigation
@@ -34,6 +35,11 @@ const Navbar = () => {
     });
   };
 
+  const handleOnClick = ()=>{
+    console.log("Button is Clicked")
+    setIsDisabled(true)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -45,7 +51,7 @@ const Navbar = () => {
     data.append('email',localStorage.getItem("email"));
 
     try {
-      const response = await axios.post('https://up-social-backend.onrender.com/posts/userpost', data, {
+      const response = await axios.post('http://localhost:8000/posts/userpost', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -161,7 +167,7 @@ const Navbar = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"                
                 >
                   Submit
                 </button>

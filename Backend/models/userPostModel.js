@@ -6,6 +6,8 @@ const userPostSchema = new mongoose.Schema({
     imageName: { type : String},
     imageUrl: { type : String},
     email:{type: String},
+    like:{type:Number, default:0},
+    email_liked : {type:Array, default:[]}
 })
 
 const Post = mongoose.model("userPost",userPostSchema)

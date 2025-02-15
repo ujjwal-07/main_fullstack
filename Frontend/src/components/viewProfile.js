@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Container from "react-bootstrap/Container"
+import Row from "react-bootstrap/Row"
+import Col from "react-bootstrap/Col"
+
 
 const Posts = () => {
   const [posts, setPosts] = useState([]); // State to store posts
@@ -14,7 +18,7 @@ const Posts = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.post('https://up-social-backend.onrender.com/posts/getyourpost', {
+      const response = await axios.post(`http://localhost:8000/posts/getyourpost`, {
         email: localStorage.getItem('email'),
       });
       if (response.data) {
@@ -38,9 +42,13 @@ const Posts = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.post('https://up-social-backend.onrender.com/posts/delete', { public_id: postId });
-      alert('Post deleted successfully!');
-      fetchPosts();
+      const response = await axios.post(`http://localhost:8000/posts/delete`, { public_id: postId });
+      console.log(response)
+      if(response.data.Success){
+        alert('Post deleted successfully!');
+        fetchPosts();
+
+      }
     } catch (error) {
       console.error('Error deleting post:', error);
       alert('Failed to delete the post.');
@@ -66,7 +74,7 @@ const Posts = () => {
     }
 
     try {
-      const response = await axios.post('https://up-social-backend.onrender.com/posts/update', {
+      const response = await axios.post(`http://localhost:8000/posts/update`, {
         postId: currentPost.imageName,
         title,
         description,
@@ -88,14 +96,26 @@ const Posts = () => {
   }
 
   return (
-    <div className="p-4 overflow-y-auto h-screen bg-gray-100">
-      {/* Back Button */}
-      <button
+<Container>   
+  <Row>
+    <Col>
+    <button
         onClick={() => navigate('/')} // Go back to the previous page
         className="bg-green-500 text-white px-4 py-2 rounded-md mb-4"
       >
         Back
       </button>
+    </Col>
+  </Row>
+  <Row>
+<Col>
+   <div className="p-4 overflow-y-auto h-screen bg-gray-100">
+      {/* Back Button */}
+   
+
+      <div>
+   
+      </div>
 
       {posts.length === 0 ? (
         <div className="flex justify-center items-center h-full">
@@ -231,6 +251,10 @@ const Posts = () => {
         </div>
       )}
     </div>
+    </Col>
+    </Row>
+    </Container>
+
   );
 };
 

@@ -42,9 +42,20 @@ const Profile = () => {
               className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
               onClick={() => navigate('/viewProfile')}
             >
-              View Your Posts
+              View Your Profile
             </li>
-           
+            <li
+              className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+              onClick={() => navigate('/viewPost')}
+            >
+              View Your Liked Posts
+            </li>
+            <li
+              className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+              onClick={() => navigate('/chat')}
+            >
+              Chat
+            </li>
           </ul>
         </div>
       )}

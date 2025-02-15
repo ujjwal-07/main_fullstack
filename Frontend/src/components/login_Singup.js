@@ -27,7 +27,7 @@ const AuthPage = () => {
 
     if (isLogin) {
       payload = { email, password };
-      apiUrl = 'https://up-social-backend.onrender.com/user/login';
+      apiUrl = 'http://localhost:8000/user/login';
       try {
         const response = await axios.post(apiUrl, payload);
         const token = response.data.token;
@@ -43,7 +43,7 @@ const AuthPage = () => {
       }
     } else {
       payload = { fname, lname, email, password };
-      apiUrl = 'https://up-social-backend.onrender.com/user/adduser';
+      apiUrl = 'http://localhost:8000/user/adduser';
       try {
         const response = await axios.post(apiUrl, payload);
         const token = response.data.token;

@@ -146,9 +146,45 @@ const updatePost = async (req, res) => {
 };
 
 
+const updateLike = async (req, res) => {
+  const { postId, email } = req.body;
+  var likeEmail = []
+ console.log(req.body)
+  try {
+    // Find the post by imageName (assumed postId is imageName in this case)
+    const post = await Post.findOne({ imageName: postId });
+    console.log("postss", post)
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    likeEmail = post.email_liked
+    console.log("EmailList", likeEmail)
+    if(likeEmail.includes(email)){
+      likeEmail.splice((likeEmail.indexOf(email)))
+      post.email_liked = likeEmail
+      post.like = post.like - 1
+    }
+    else{
+      likeEmail.push(email)
+      post.like = post.like + 1
+      post.email_liked = likeEmail
+    }
+    // Update the title and description
+    console.log("EmailList", likeEmail)
 
+    // Save the updated post
+    await post.save();
+    
+
+    // Send success response
+    return res.status(200).send({ Success: 'Post updated successfully', post });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server error. Please try again later' });
+  }
+};
 
 
 
 // Export the controller methods
-module.exports = { addPost, getPosts, upload, deletePost, updatePost,getYourPost };
+module.exports = { addPost, getPosts, upload, deletePost, updatePost,getYourPost, updateLike };

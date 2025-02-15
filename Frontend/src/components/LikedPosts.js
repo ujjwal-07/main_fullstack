@@ -137,12 +137,8 @@ const Posts = () => {
         postId: postId,
         email : localStorage.getItem("email")
       });
-
-      
       if (response.data.Success) {
-        if(console.log("Postssss",response.data.post.email == localStorage.getItem("email"))){
-          alert(`${localStorage.getItem("email")} Some Liked your Post`)
-        }
+       
         fetchPosts();
       }
     } catch (error) {
@@ -155,14 +151,22 @@ const Posts = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen bg-gray-100">
+        
         <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
       </div>
     );
   }
-
   return (
+    
     <div className="p-4 overflow-y-auto h-screen bg-gray-100">
+       <button
+        onClick={() => navigate('/')} // Go back to the previous page
+        className="bg-green-500 text-white px-4 py-2 rounded-md mb-4"
+      >
+        Back
+      </button>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+     
       {posts.map((post) => {
   // Get the user's email (for example, from localStorage or state)
   const userEmail = localStorage.getItem('email'); // or use state if applicable
@@ -172,8 +176,10 @@ const Posts = () => {
  console.log(like, "Like is this")
  const totalLike = post.email_liked.length
  console.log(totalLike)
-
+ if(post.email_liked.includes(userEmail)){
+ 
   return (
+    
     <div
       key={post._id}
       className="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 relative"
@@ -217,154 +223,19 @@ const Posts = () => {
         <span className="ml-2 text-gray-600">{totalLike}</span> {/* Show like count */}
       </div>
     </div>
+ 
   );
+}else{
+  <h1>No Posts Liked</h1>
+}
 })}
 
       </div>
 
-      {/* Modal for updating post */}
-      {showModal && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-2xl font-semibold text-center">Update Post</h2>
+    
 
-            <form>
-              <div className="mt-4">
-                <label htmlFor="imageName" className="block text-sm font-medium text-gray-700">
-                  Image Name:
-                </label>
-                <input
-                  type="text"
-                  id="imageName"
-                  value={currentPost?.imageName || ''}
-                  disabled
-                  className="mt-1 p-2 w-full bg-gray-100 border border-gray-300 rounded-md"
-                />
-              </div>
 
-              <div className="mt-4">
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                  Title:
-                </label>
-                <input
-                  type="text"
-                  id="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-
-              <div className="mt-4">
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                  Description:
-                </label>
-                <textarea
-                  id="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-                  required
-                ></textarea>
-              </div>
-
-              <div className="mt-6 flex justify-between">
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="px-4 py-2 bg-gray-400 text-white rounded-md"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => {
-                    handleSubmitUpdate();
-                  }}
-                  type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {isPopupOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Upload Post</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="title" className="block text-gray-700 font-medium mb-1">
-                  Title
-                </label>
-                <input
-                  type="text"
-                  id="title"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-500 focus:outline-none"
-                  placeholder="Enter title"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="description" className="block text-gray-700 font-medium mb-1">
-                  Description
-                </label>
-                <textarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-500 focus:outline-none"
-                  placeholder="Enter description"
-                  rows="4"
-                  required
-                ></textarea>
-              </div>
-
-              <div>
-                <label htmlFor="file" className="block text-gray-700 font-medium mb-1">
-                  Upload Image
-                </label>
-                <input
-                  type="file"
-                  id="file"
-                  name="file"
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-500 focus:outline-none"
-                  accept="image/*"
-                  required
-                />
-              </div>
-
-              <div className="flex justify-end space-x-4">
-                <button
-                  type="button"
-                  className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400"
-                  onClick={togglePopup}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
-
 export default Posts;
